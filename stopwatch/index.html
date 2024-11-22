@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Watch</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            border: 0;
+
+        }
+
+        body {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .stopWatch {
+            width: 100%;
+            height: 250px;
+            background-color: #ffffff;
+        }
+
+        .timer {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 250px;
+            color: #000000;
+            font-family: cursive;
+        }
+
+        .display {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        .buttonCnt {
+            width: 50%;
+            height: auto;
+            padding: 10px;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        button {
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="stopWatch">
+        <div class="timer">
+            <div class="display">
+                <h1 id="hours">00 : </h1>
+                <h1 id="minutes"> &nbsp;00 : </h1>
+                <h1 id="seconds"> &nbsp; 00 </h1>
+            </div>
+            <div class="buttonCnt">
+                <button id="start" style="background-color: green;">Start</button>
+                <button id="stop"  style="background-color: red"> Stop</button>
+                <button id="reset"  style="background-color: blue">Reset</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(() => {
+
+            let hrs = $("#hours");
+            let seconds = $("#seconds");
+            let mins = $("#minutes");
+
+            let start = $("#start");
+            let stop = $("#stop");
+            let reset = $("#reset");
+
+            let timer = null; 
+            let totalSecond = 0; 
+
+
+            function formatTime(value) {
+                return value < 10 ? `0${value}` : value;
+            }
+
+
+            function updateTime() {
+                let hours = Math.floor(totalSecond / 3600);
+                let minutes = Math.floor(totalSecond % 3600 / 60);
+                let sec = totalSecond % 60;
+
+                hrs.text(`${formatTime(hours)} : `);
+                mins.text(`${formatTime(minutes)} : `);
+                seconds.text(`${formatTime(sec)}`);
+
+            }
+
+
+            start.click(() => {
+                if (!timer) {
+                    timer = setInterval(() => {
+                        totalSecond++;
+                        updateTime();
+                    }, 1000)
+                }
+            });
+
+
+            stop.click(() => {
+                clearInterval(timer);
+
+                timer = null;
+            });
+
+            reset.click(() => {
+                clearInterval(timer);
+                timer = null;
+
+                totalSecond = 0;
+                updateTime();
+            })
+
+            updateTime();
+        })
+    </script>
+
+</body>
+
+</html>
